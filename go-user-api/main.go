@@ -10,6 +10,11 @@ const (
 	defaultDBPath  = "users.db"
 )
 
+// @title User API
+// @version 1.0
+// @description REST API sederhana untuk mengelola data user.
+// @host localhost:8081
+// @BasePath /api
 func main() {
 	dbPath := os.Getenv("DB_PATH")
 	if dbPath == "" {

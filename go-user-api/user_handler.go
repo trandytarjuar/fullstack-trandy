@@ -19,6 +19,13 @@ func newUserHandler(db *gorm.DB) *userHandler {
 	return &userHandler{db: db}
 }
 
+// list godoc
+// @Summary Daftar semua user
+// @Tags users
+// @Produce json
+// @Success 200 {array} User
+// @Failure 500 {object} ErrorResponse
+// @Router /users [get]
 func (h *userHandler) list(c *gin.Context) {
 	users := make([]User, 0)
 	if err := h.db.Order("user_id ASC").Find(&users).Error; err != nil {
@@ -28,6 +35,15 @@ func (h *userHandler) list(c *gin.Context) {
 	c.JSON(http.StatusOK, users)
 }
 
+// get godoc
+// @Summary Ambil user berdasarkan ID
+// @Tags users
+// @Produce json
+// @Param userId path int true "User ID"
+// @Success 200 {object} User
+// @Failure 404 {object} ErrorResponse
+// @Failure 500 {object} ErrorResponse
+// @Router /users/{userId} [get]
 func (h *userHandler) get(c *gin.Context) {
 	user, ok := h.findByID(c)
 	if !ok {
@@ -36,6 +52,17 @@ func (h *userHandler) get(c *gin.Context) {
 	c.JSON(http.StatusOK, user)
 }
 
+// create godoc
+// @Summary Buat user baru
+// @Tags users
+// @Accept json
+// @Produce json
+// @Param user body UserRequest true "Data user"
+// @Success 201 {object} User
+// @Failure 400 {object} ErrorResponse
+// @Failure 409 {object} ErrorResponse
+// @Failure 500 {object} ErrorResponse
+// @Router /users [post]
 func (h *userHandler) create(c *gin.Context) {
 	request, ok := bindUserRequest(c)
 	if !ok {
@@ -62,6 +89,19 @@ func (h *userHandler) create(c *gin.Context) {
 	c.JSON(http.StatusCreated, user)
 }
 
+// update godoc
+// @Summary Perbarui user
+// @Tags users
+// @Accept json
+// @Produce json
+// @Param userId path int true "User ID"
+// @Param user body UserRequest true "Data user"
+// @Success 200 {object} User
+// @Failure 400 {object} ErrorResponse
+// @Failure 404 {object} ErrorResponse
+// @Failure 409 {object} ErrorResponse
+// @Failure 500 {object} ErrorResponse
+// @Router /users/{userId} [put]
 func (h *userHandler) update(c *gin.Context) {
 	request, ok := bindUserRequest(c)
 	if !ok {
@@ -93,6 +133,14 @@ func (h *userHandler) update(c *gin.Context) {
 	c.JSON(http.StatusOK, user)
 }
 
+// delete godoc
+// @Summary Hapus user
+// @Tags users
+// @Param userId path int true "User ID"
+// @Success 204
+// @Failure 404 {object} ErrorResponse
+// @Failure 500 {object} ErrorResponse
+// @Router /users/{userId} [delete]
 func (h *userHandler) delete(c *gin.Context) {
 	user, ok := h.findByID(c)
 	if !ok {

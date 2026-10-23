@@ -12,3 +12,8 @@ type UserRequest struct {
 	LastName  string `json:"lastName" binding:"required,max=100"`
 	Email     string `json:"email" binding:"required,email,max=254"`
 }
+
+type ErrorResponse struct {
+	Message string `json:"message" example:"User not found"`
+	Details string `json:"details,omitempty" example:"validation error"`
+}
